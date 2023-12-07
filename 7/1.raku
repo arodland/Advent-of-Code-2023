@@ -3,19 +3,19 @@ my %cardvals = <2 3 4 5 6 7 8 9 T J Q K A>.antipairs;
 sub classify(@hand) {
     my @pairs = Bag(@hand).sort: { $^b.value <=> $^a.value };
     if @pairs[0].value == 5 {
-        return 7;
+        return 7; # 5 of a kind
     } elsif @pairs[0].value == 4 {
-        return 6;
+        return 6; # 4 of a kind
     } elsif @pairs[0].value == 3 && @pairs[1].value == 2 {
-        return 5;
+        return 5; # full house
     } elsif @pairs[0].value == 3 {
-        return 4;
+        return 4; # 3 of a kind
     } elsif @pairs[0].value == 2 && @pairs[1].value == 2 {
-        return 3;
+        return 3; # two pair
     } elsif @pairs[0].value == 2 {
-        return 2;
+        return 2; # one pair
     } else {
-        return 1;
+        return 1; # nada
     }
 }
 
