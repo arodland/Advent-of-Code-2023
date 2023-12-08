@@ -8,7 +8,7 @@ for $*ARGFILES.lines -> $line {
 }
 
 my @starts = %map.keys.grep: { $_ ~~ /'A' $/ };
-my @lens = gather {
+say [lcm] gather {
     for @starts -> $pos is copy {
         say "starting at $pos";
         my ($i, $steps) = (0, 0);
@@ -25,5 +25,3 @@ my @lens = gather {
         }
     }
 };
-say @lens;
-say [lcm] @lens;

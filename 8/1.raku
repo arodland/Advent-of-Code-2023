@@ -9,7 +9,6 @@ for $*ARGFILES.lines -> $line {
 
 my ($i, $steps, $pos) = (0, 0, 'AAA');
 loop {
-    say $pos;
     if $pos eq 'ZZZ' {
         say $steps;
         last;
