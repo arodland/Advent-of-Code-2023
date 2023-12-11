@@ -39,7 +39,11 @@ if $up {
         @map[$r; $c] = "L";
     }
 } elsif $lt {
-    @map[$r; $c] = "7";
+    if $rt {
+        @map[$r; $c] = "-";
+    } else {
+        @map[$r; $c] = "7";
+    }
 } else {
     @map[$r; $c] = "F";
 }
