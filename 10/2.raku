@@ -53,18 +53,25 @@ for @rc -> ($r, $c) {
     @map[$r; $c] = '.' unless $visited{"$r;$c"};
 }
 
-say @map».join("").join("\n");
-
 my $area = 0;
 for @map.keys -> $r {
     my $inside = False;
+    my $rowarea = 0;
     for @map[$r].kv -> $c, $sym {
         if $sym (elem) ('|', 'L', 'J') {
             $inside = !$inside;
         }
-        if $sym eq '.' and $inside {
-            $area++;
+        if $sym eq '.' {
+            if $inside {
+                $area++;
+                $rowarea++;
+            }  else {
+                @map[$r; $c] = ' ';
+            }
+        } else {
+            @map[$r; $c] = %('|' => '│', '-' => '─', 'J' => '┘', 'L' => '└', '7' => '┐', 'F' => '┌'){$sym};
         }
     }
+    say @map[$r].join(""), "  ", $rowarea;
 }
 say $area;
