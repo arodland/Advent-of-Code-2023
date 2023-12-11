@@ -65,6 +65,7 @@ for @map.keys -> $r {
             if $inside {
                 $area++;
                 $rowarea++;
+                @map[$r; $c] = '░';
             }  else {
                 @map[$r; $c] = ' ';
             }
