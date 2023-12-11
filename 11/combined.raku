@@ -6,10 +6,10 @@ my @empty_cols = @map[0].keys.grep: { all(@map[*;$_]) eq '.' };
 my @rc = @map.keys X @map[0].keys;
 my @galaxies = @rc.grep: { @map[$_[0];$_[1]] eq '#' };
 
-for @galaxies.kv -> $i, $g {
-    @galaxies[$i] = [
-        $g[0] + ($EXPANSION-1) * @empty_rows.grep({ $_ < $g[0] }).elems,
-        $g[1] + ($EXPANSION-1) * @empty_cols.grep({ $_ < $g[1] }).elems,
+@galaxies = @galaxies.map: -> ($r, $c) {
+    [
+        $r + ($EXPANSION-1) * @empty_rows.grep({ $_ < $r }).elems,
+        $c + ($EXPANSION-1) * @empty_cols.grep({ $_ < $c }).elems,
     ];
 }
 
