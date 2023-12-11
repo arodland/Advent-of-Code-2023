@@ -1,6 +1,6 @@
 my @map = $*ARGFILES.lines».comb».Array;
 my @rc = @map.keys X @map[0].keys;
-my $start = @rc.first: { @map[$_[0]][$_[1]] eq 'S' };
+my $start = @rc.first: { @map[$_[0]; $_[1]] eq 'S' };
 my SetHash $visited;
 my @queue = $[$start, 0];
 my $maxdist = 0;
@@ -12,10 +12,10 @@ while my $next = @queue.shift {
 
     $visited{"$r;$c"} = 1;
     my @neighbors = gather {
-        take ($r-1, $c) if $r > 0 and @map[$r][$c] (elem) ('S', '|', 'J', 'L') and @map[$r-1][$c] (elem) ('|', '7', 'F');
-        take ($r+1, $c) if $r < @map.elems-1 and @map[$r][$c] (elem) ('S', '|', '7', 'F') and @map[$r+1][$c] (elem) ('|', 'J', 'L');
-        take ($r, $c-1) if $c > 0 and @map[$r][$c] (elem) ('S', '-', '7', 'J') and @map[$r][$c-1] (elem) ('-', 'F', 'L');
-        take ($r, $c+1) if $c < @map[0].elems-1 and @map[$r][$c] (elem) ('S', '-', 'F', 'L') and @map[$r][$c+1] (elem) ('-', '7', 'J');
+        take ($r-1, $c) if $r > 0 and @map[$r; $c] (elem) ('S', '|', 'J', 'L') and @map[$r-1; $c] (elem) ('|', '7', 'F');
+        take ($r+1, $c) if $r < @map.elems-1 and @map[$r; $c] (elem) ('S', '|', '7', 'F') and @map[$r+1; $c] (elem) ('|', 'J', 'L');
+        take ($r, $c-1) if $c > 0 and @map[$r; $c] (elem) ('S', '-', '7', 'J') and @map[$r; $c-1] (elem) ('-', 'F', 'L');
+        take ($r, $c+1) if $c < @map[0].elems-1 and @map[$r; $c] (elem) ('S', '-', 'F', 'L') and @map[$r; $c+1] (elem) ('-', '7', 'J');
     }
     @neighbors = @neighbors.grep: { !$visited{$_.join(";")} };
     for @neighbors -> $n {
@@ -32,21 +32,21 @@ my $rt = $visited{"$r;{$c+1}"};
 
 if $up {
     if $dn {
-        @map[$r][$c] = "|";
+        @map[$r; $c] = "|";
     } elsif $lt {
-        @map[$r][$c] = "J";
+        @map[$r; $c] = "J";
     } else {
-        @map[$r][$c] = "L";
+        @map[$r; $c] = "L";
     }
 } elsif $lt {
-    @map[$r][$c] = "7";
+    @map[$r; $c] = "7";
 } else {
-    @map[$r][$c] = "F";
+    @map[$r; $c] = "F";
 }
 
 # Erase the extraneous pipes to make it pretty
 for @rc -> ($r, $c) {
-    @map[$r][$c] = '.' unless $visited{"$r;$c"};
+    @map[$r; $c] = '.' unless $visited{"$r;$c"};
 }
 
 say @map».join("").join("\n");
