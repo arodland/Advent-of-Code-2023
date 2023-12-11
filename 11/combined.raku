@@ -14,11 +14,9 @@ my @galaxies = @rc.grep: { @map[$_[0];$_[1]] eq '#' };
 }
 
 my $total = 0;
-for @galaxies.keys -> $g1 {
-    for $g1 ^..^ @galaxies.elems -> $g2 {
-        my $dist = [+] (@galaxies[$g1] «-» @galaxies[$g2])».abs;
-        $total += $dist;
-    }
+for @galaxies.combinations(2) -> ($g1, $g2) {
+    my $dist = [+] ($g1 «-» $g2)».abs;
+    $total += $dist;
 }
 
 say $total;
