@@ -25,10 +25,10 @@ while my $next = @queue.shift {
 
 # Fix the starting symbol
 my ($r, $c) = @$start;
-my $up = $visited{"{$r-1};$c"};
-my $dn = $visited{"{$r+1};$c"};
-my $lt = $visited{"$r;{$c-1}"};
-my $rt = $visited{"$r;{$c+1}"};
+my $up = ($visited{"{$r-1};$c"}) && (@map[$r-1; $c] (elem) ('|', '7', 'F'));
+my $dn = ($visited{"{$r+1};$c"}) && (@map[$r+1; $c] (elem) ('|', 'L', 'J'));
+my $lt = ($visited{"$r;{$c-1}"}) && (@map[$r; $c-1] (elem) ('-', 'L', 'F'));
+my $rt = ($visited{"$r;{$c+1}"}) && (@map[$r; $c+1] (elem) ('-', '7', 'J'));
 
 if $up {
     if $dn {
