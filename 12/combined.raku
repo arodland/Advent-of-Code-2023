@@ -53,9 +53,8 @@ my $total = [+] $*ARGFILES.lines.race.map: -> $line {
         # elements of the target, and the last should be less than or equal to the corresponding
         # element of the target.
         @product .= grep: {
-            my $v = $_.value.clone;
-            $v.pop if $v[*-1] == 0 and $v.elems > 1;
-            my $end = $v.end;
+            my $v := $_.value;
+            my $end = ($v[*-1] == 0 && $v.elems > 1) ?? $v.end-1 !! $v.end;
             ($end <= $target.end) &&
             ($v[0 .. $end-1] eqv $target[0 .. $end-1]) && 
             ($v[$end] <= $target[$end])
