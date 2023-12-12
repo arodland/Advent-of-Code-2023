@@ -45,7 +45,7 @@ my $total = [+] $*ARGFILES.lines.race.map: -> $line {
                 }
                 # Some elements might have identical group lists now. Find them and merge them into
                 # a single entry with the sum of their counts.
-                @product = @new.categorize(*.value.join(',')).values.map: { ([+] $_».key) => $_[0].value };
+                @product = @new.classify(*.value.join(',')).values.map: { ([+] $_».key) => $_[0].value };
             }
         }
         # Prune any groupings that couldn't become the target by further appending.
