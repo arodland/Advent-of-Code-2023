@@ -5,7 +5,6 @@ my $REPLICATE = @*ARGS.shift.Int;
 
 # Read each line of the input and aggregate the total possibilities.
 # .race allows processing several lines in parallel for a speedup.
-my $total = [+] $*ARGFILES.lines.race.map: -> $line {
 my $total = [+] $*ARGFILES.lines.race(:batch(1)).map: -> $line {
     # Input parsing
     my ($springs_orig, $target_orig) = $line.words;
