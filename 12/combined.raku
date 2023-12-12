@@ -10,7 +10,7 @@ my $total = [+] $*ARGFILES.lines.race.map: -> $line {
     my ($springs_orig, $target_orig) = $line.words;
     my $springs = ($springs_orig xx $REPLICATE).join('?');
     my $target = ($target_orig xx $REPLICATE).join(',');
-    $target = $target.split(',')».Int;
+    $target = $target.split(',')».Int.Array;
 
     # State is stored as a list of pairs: the value is a list of group sizes
     # (with a terminating 0 if we've seen a dot after the last group)
@@ -70,7 +70,7 @@ my $total = [+] $*ARGFILES.lines.race.map: -> $line {
     # Add up the counts of matching items. If the previous code worked properly,
     # there should be no more than two matches: one which had a trailing zero removed just now
     # and one that didn't have one to remove because a group ended at the end.
-    my $count = [+] @product.grep({$_.value eq $target }).map({$_ ?? .key !! 0});
+    my $count = [+] @product.grep({$_.value eqv $target }).map({$_ ?? .key !! 0});
     say "$springs_orig ($target_orig) == $count";
     $count;
 };
