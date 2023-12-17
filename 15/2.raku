@@ -1,9 +1,5 @@
 sub hash(Str $str) {
-    my $hash = 0;
-    for $str.comb -> $ch {
-        $hash = (($hash + $ch.ord) * 17) % 256;
-    }
-    return $hash;
+    (0, |$str.comb).reduce: { (($^a + $^b.ord) * 17) % 256 };
 }
 
 my @instructions = $*ARGFILES.get.split(',');
