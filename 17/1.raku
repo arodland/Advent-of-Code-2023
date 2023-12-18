@@ -10,9 +10,8 @@ my @DIRS = (
 );
 
 my @queue = (
-    # dir (0, 0) doesn't match anything so we can go three steps
-    # in any direction from the start, theoretically.
-    { loss => 0, pos => (0, 0), dir => (0, 0), straight => 0, key => "init" },
+    { loss => 0, pos => (0, 0), dir => (1, 0), straight => 0, key => "init-down" },
+    { loss => 0, pos => (0, 0), dir => (0, 1), straight => 0, key => "init-right" },
 );
 
 my %visited;
@@ -23,7 +22,8 @@ while my $state = @queue.shift {
     %visited{$state<key>} = $state<loss>;
 
     my $goal = $state<pos> eqv (@map.end, @map[0].end);
-    if $goal or $i++ % 100 == 0 {
+    if $goal or $i++ % 1000 == 0 {
+        @queue .= unique(:as({ $_<key> }));
         say "[$state<pos>]: $state<loss> (elems: { @queue.elems })";
     }
     last if $goal;
@@ -35,8 +35,9 @@ while my $state = @queue.shift {
         next if $newpos[0] < 0 or $newpos[0] > @map.end;
         next if $newpos[1] < 0 or $newpos[1] > @map[0].end;
         next if $dir eqv ($state<dir> «*» -1);
-        my $straight = ($dir eqv $state<dir>) ?? $state<straight> + 1 !! 1;
-        next if $straight == 4;
+        my $turn = $dir !eqv $state<dir>;
+        my $straight = $turn ?? 1 !! $state<straight> + 1;
+        next if $straight > 3;
         my $loss = $state<loss> + @map[$newpos[0]; $newpos[1]];
         my $data = { 
             key => $newpos.join(";") ~ ";" ~ $dir.join(";") ~ ";$straight",
