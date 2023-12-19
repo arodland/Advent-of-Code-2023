@@ -22,11 +22,9 @@ my @queue = (
 
 PART: while @queue.elems {
     my ($wfname, $bounds) = @queue.shift;
-    my @wf = %rules{$wfname}.clone;
-    RULE: while @wf.elems {
-        my $rule = @wf.shift;
+    RULE: for |%rules{$wfname} -> $rule {
         my $cond = $rule<cond>;
-        my $newbounds = { x => $bounds<x>.clone, m => $bounds<m>.clone, a => $bounds<a>.clone, s => $bounds<s>.clone };
+        my $newbounds = Hash.new($bounds.pairs);
         if $cond.defined and $cond[1] eq '>' {
             $newbounds{$cond[0]} = ($newbounds{$cond[0]}.min max $cond[2]+1) .. $newbounds{$cond[0]}.max;
             $bounds{$cond[0]} = $bounds{$cond[0]}.min .. ($bounds{$cond[0]}.max min $cond[2]);
